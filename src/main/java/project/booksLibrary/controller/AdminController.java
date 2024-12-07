@@ -2,9 +2,10 @@ package project.booksLibrary.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import project.booksLibrary.model.Book;
 import project.booksLibrary.repository.BookRepository;
 
-import java.awt.print.Book;
+
 
 @RestController
 @RequestMapping("/admin")

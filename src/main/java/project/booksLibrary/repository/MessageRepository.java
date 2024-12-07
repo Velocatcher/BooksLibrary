@@ -1,8 +1,9 @@
 package project.booksLibrary.repository;
 
-import org.apache.logging.log4j.message.Message;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import project.booksLibrary.model.Message;
 
 import java.util.List;
 

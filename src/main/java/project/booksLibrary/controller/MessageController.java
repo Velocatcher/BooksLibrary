@@ -1,9 +1,10 @@
 package project.booksLibrary.controller;
 
-import org.apache.logging.log4j.message.Message;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import project.booksLibrary.dto.MessageDTO;
+import project.booksLibrary.model.Message;
 import project.booksLibrary.service.MessageService;
 
 import java.util.List;

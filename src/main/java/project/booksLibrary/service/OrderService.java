@@ -1,19 +1,18 @@
+
 package project.booksLibrary.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import project.booksLibrary.model.Book;
+import project.booksLibrary.model.Order;
+import project.booksLibrary.model.User;
 import project.booksLibrary.repository.BookRepository;
 import project.booksLibrary.repository.OrderRepository;
 import project.booksLibrary.repository.UserRepository;
 
-import java.awt.print.Book;
 import java.time.LocalDate;
 
 @Service
@@ -29,29 +28,14 @@ public class OrderService {
     private UserRepository userRepository;
 
     public ResponseEntity<String> placeOrder(Long bookId, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found"));
 
         if (!book.isAvailable()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Book is not available for order.");
         }
 
-        Order order = new Order() {
-            @Override
-            public Order reverse() {
-                return null;
-            }
-
-            @Override
-            public boolean isAscending() {
-                return false;
-            }
-
-            @Override
-            public Expression<?> getExpression() {
-                return null;
-            }
-        };
+        Order order = new Order();
         order.setUser(user);
         order.setBook(book);
         order.setDueDate(LocalDate.now().plusWeeks(2));
