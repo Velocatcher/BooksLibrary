@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: content}">
+<head>
+    <title>Library Management System - My Orders</title>
+</head>
+<body>
+    <h1>My Orders</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.book.title}">Book Title</td>
+                <td th:text="${order.dueDate}">Due Date</td>
+                <td th:text="${order.returned ? 'Returned' : 'Active'}">Status</td>
+                <td>
+                    <form th:action="@{/user/orders/return/{id}(id=${order.id})}" method="post">
+                        <button type="submit" th:if="${!order.returned}">Return</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

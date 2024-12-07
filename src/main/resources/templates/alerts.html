@@ -1,0 +1,10 @@
+
+<div th:if="${message}" class="alert alert-info" role="alert">
+    <p th:text="${message}">This is an informational alert</p>
+</div>
+<div th:if="${error}" class="alert alert-danger" role="alert">
+    <p th:text="${error}">This is an error alert</p>
+</div>
+<div th:if="${success}" class="alert alert-success" role="alert">
+    <p th:text="${success}">This is a success alert</p>
+</div>
