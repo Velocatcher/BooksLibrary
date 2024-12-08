@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   mysql-db:
@@ -6,26 +7,19 @@ services:
     restart: always
     ports:
       - "3307:3306"
-#      volumes:
-#        - db_data:/var/lib/mysql
-#      networks:
-#        -library_network
-
+    volumes:
+      - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: library_user
       MYSQL_PASSWORD: library_password
       MYSQL_DATABASE: library_db
-    volumes:
-      - db_data:/var/lib/mysql
     healthcheck:
-      test: mysqladmin ping -u root -p $$MYSQL_ROOT_PASSWORD
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       start_period: 10s
       retries: 5
+
 volumes:
   db_data:
-networks:
-  library_network:
-    driver: bridge

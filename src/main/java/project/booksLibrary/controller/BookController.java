@@ -3,7 +3,7 @@ package project.booksLibrary.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.booksLibrary.model.Book;
+import project.booksLibrary.dto.BookDTO;
 import project.booksLibrary.service.BookService;
 
 import java.util.List;
@@ -18,15 +18,20 @@ public class BookController {
 
 //    @Operation(summary = "Get all books")
     @GetMapping
-    public List<Book> getAllBooks() {
+    public List<BookDTO> getAllBooks() {
         return bookService.getAllBooks();
     }
 
 //    @Operation(summary = "Add a new book")
-    @PostMapping
-    public Book addBook(@RequestBody Book book) {
-        return bookService.saveBook(book);
-    }
+@PostMapping
+public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO bookDTO) {
+    BookDTO createdBook = bookService.saveBook(bookDTO);
+    return ResponseEntity.ok(createdBook);
+}
+//    @PostMapping
+//    public Book addBook(@RequestBody Book book) {
+//        return bookService.saveBook(book);
+//    }
 
 //    @Operation(summary = "Delete a book by ID")
     @DeleteMapping("/{id}")

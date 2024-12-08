@@ -1,12 +1,12 @@
 package project.booksLibrary.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@Setter
+@AllArgsConstructor
+@Data
 public class UserDTO {
+    private Long id;
     private String username;
-    private String password;
     private String role;
 }

@@ -1,42 +1,34 @@
 package project.booksLibrary.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import project.booksLibrary.dto.MessageDTO;
 import project.booksLibrary.model.Message;
-import project.booksLibrary.model.User;
 import project.booksLibrary.repository.MessageRepository;
-import project.booksLibrary.repository.UserRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class MessageService {
 
     @Autowired
     private MessageRepository messageRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    public List<Message> getMessagesForUser(Long userId) {
-        return messageRepository.findByReceiverId(userId);
+    public List<MessageDTO> getMessagesForUser(Long userId) {
+        return messageRepository.findByReceiverId(userId).stream()
+                .map(message -> new MessageDTO(message.getId(), message.getSenderId(), message.getReceiverId(), message.getContent(), message.getTimestamp(), message.isRead()))
+                .collect(Collectors.toList());
     }
 
-    public Message sendMessage(Long senderId, Long receiverId, String content) {
-        User sender = userRepository.findById(senderId).orElseThrow(() -> new EntityNotFoundException("Sender not found"));
-        User receiver = userRepository.findById(receiverId).orElseThrow(() -> new EntityNotFoundException("Receiver not found"));
-
+    public MessageDTO sendMessage(MessageDTO messageDTO) {
         Message message = new Message();
-        message.setSender(sender);
-        message.setReceiver(receiver);
-        message.setContent(content);
-        message.setTimestamp(LocalDateTime.now());
-        message.setRead(false);
-
-        return messageRepository.save(message);
+        message.setSenderId(messageDTO.getSenderId());
+        message.setReceiverId(messageDTO.getReceiverId());
+        message.setContent(messageDTO.getContent());
+        message.setTimestamp(messageDTO.getTimestamp());
+        message.setRead(messageDTO.isRead());
+        Message savedMessage = messageRepository.save(message);
+        return new MessageDTO(savedMessage.getId(), savedMessage.getSenderId(), savedMessage.getReceiverId(), savedMessage.getContent(), savedMessage.getTimestamp(), savedMessage.isRead());
     }
 }

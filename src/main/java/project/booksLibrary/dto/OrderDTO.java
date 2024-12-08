@@ -1,11 +1,16 @@
 package project.booksLibrary.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@Setter
+import java.time.LocalDate;
+
+@AllArgsConstructor
+@Data
 public class OrderDTO {
+    private Long id;
     private Long bookId;
-    private String username;
+    private Long userId;
+    private LocalDate dueDate;
+    private boolean returned;
 }
